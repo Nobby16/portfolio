@@ -1,5 +1,5 @@
 import SkillIcon from './SkillIcon.jsx'
-import technologyIcons from '../data/technologyIcons.js'
+import technologyIcons, { topicIcons } from '../data/technologyIcons.js'
 
 function ProjectCard({ project }) {
   const availableLinks = project.links.filter((link) => link.href)
@@ -31,7 +31,12 @@ function ProjectCard({ project }) {
         <div className="project-detail">
           <h4>Topics</h4>
           <ul className="tag-list">
-            {topics.map((topic) => <li className="tag" key={topic}>{topic}</li>)}
+            {topics.map((topic) => (
+              <li className="tag technology-tag" key={topic}>
+                <SkillIcon name={topicIcons[topic] ?? 'shield-lock'} />
+                <span>{topic}</span>
+              </li>
+            ))}
           </ul>
         </div>
       )}

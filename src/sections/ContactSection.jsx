@@ -19,7 +19,7 @@ function ContactSection() {
     if (!accessKey) {
       setStatus({
         type: 'error',
-        message: 'The contact form is not configured yet. Please email me directly.',
+        message: 'The contact form is not configured yet. Set VITE_WEB3FORMS_ACCESS_KEY in the project root .env.local file and restart the Vite development server.',
       })
       return
     }
@@ -30,6 +30,7 @@ function ContactSection() {
     try {
       const formData = new FormData(form)
       formData.set('access_key', accessKey)
+      formData.set('replyto', formData.get('email'))
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         body: formData,
@@ -46,7 +47,7 @@ function ContactSection() {
     } catch {
       setStatus({
         type: 'error',
-        message: 'Something went wrong. Please try again or contact me directly by email.',
+        message: 'Something went wrong. Please try again or email me directly.',
       })
     } finally {
       setIsSubmitting(false)
@@ -94,7 +95,7 @@ function ContactSection() {
           <input type="hidden" name="subject" value="Portfolio contact form message" />
           <div className="form-submit-row">
             <button className="button button-primary" type="submit" disabled={isSubmitting}>
-              {isSubmitting ? 'Sending…' : 'Send Message'}
+              {isSubmitting ? 'Sending...' : 'Send Message'}
             </button>
           </div>
           <p className={`form-status ${status.type ? `is-${status.type}` : ''}`} role={status.type === 'error' ? 'alert' : 'status'} aria-live={status.type === 'error' ? 'assertive' : 'polite'}>

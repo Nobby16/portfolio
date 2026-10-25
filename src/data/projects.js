@@ -8,8 +8,7 @@ const projects = [
     context: 'Team project',
     technologies: ['Next.js', 'Node.js', 'Express', 'MongoDB', 'Vercel'],
     links: [
-      { label: 'GitHub', href: null },
-      { label: 'Live Demo', href: 'https://autoshoopa.vercel.app/' },
+      { label: 'Demo', href: 'https://autoshoopa.vercel.app/' },
     ],
   },
   {
@@ -21,8 +20,7 @@ const projects = [
     context: 'Final-year academic project',
     technologies: ['React', 'MongoDB', 'Express.js', 'Node.js', 'Vercel'],
     links: [
-      { label: 'GitHub', href: null },
-      { label: 'Live Demo', href: null },
+      { label: 'GitHub', href: 'https://github.com/Nobby16/Dormitory_Managment_System.git' },
     ],
   },
   {

@@ -42,6 +42,10 @@ function SkillIcon({ name }) {
       return <svg {...shared}><path d="m12 2.8 8 4.6v9.2l-8 4.6-8-4.6V7.4l8-4.6Z" /><path d="M9 15V9l6 6V9" /></svg>
     case 'express':
       return <svg {...shared}><path d="M7 5H5v14h2m10-14h2v14h-2M9 12h6m-3-3 3 3-3 3" /></svg>
+    case 'nextjs':
+      return <svg {...shared} stroke="none"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm4.6 14.6L10 7.8V16H8.8V6.2l8.4 10.8-.6.6Z" /></svg>
+    case 'vercel':
+      return <svg {...shared} stroke="none"><path fill="currentColor" d="M12 3 22 21H2Z" /></svg>
     case 'mongodb':
       return <svg {...shared}><path d="M12 3c-3.5 4.6-5.3 7.3-4.2 11.2.6 2.2 2 3.6 3.5 4.7L12 21l.8-2.1c1.5-1.1 2.9-2.5 3.5-4.7C17.4 10.3 15.5 7.6 12 3Z" /><path d="M12 8v11" /></svg>
     case 'database':

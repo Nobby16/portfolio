@@ -1,5 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import navigation from '../data/navigation.js'
+
+const THEME_COLORS = { light: '#e6eef7', dark: '#0b1220' }
+
+function applyThemeColor(theme) {
+  const meta = document.querySelector('meta[name="theme-color"]')
+  if (meta) meta.setAttribute('content', THEME_COLORS[theme] || THEME_COLORS.light)
+}
 
 function NavigationLinks({ onNavigate }) {
   return (
@@ -19,10 +26,26 @@ function ThemeToggle() {
     return saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
   })
 
+  useEffect(() => {
+    applyThemeColor(theme)
+
+    const mql = window.matchMedia('(prefers-color-scheme: dark)')
+    function handleSystemChange(event) {
+      if (window.localStorage.getItem('portfolio-theme')) return
+      const next = event.matches ? 'dark' : 'light'
+      document.documentElement.dataset.theme = next
+      applyThemeColor(next)
+      setTheme(next)
+    }
+    mql.addEventListener('change', handleSystemChange)
+    return () => mql.removeEventListener('change', handleSystemChange)
+  }, [theme])
+
   function toggleTheme() {
     const nextTheme = theme === 'dark' ? 'light' : 'dark'
     document.documentElement.dataset.theme = nextTheme
     window.localStorage.setItem('portfolio-theme', nextTheme)
+    applyThemeColor(nextTheme)
     setTheme(nextTheme)
   }
 
@@ -46,6 +69,8 @@ function NavActions() {
 }
 
 function Navbar() {
+  const detailsRef = useRef(null)
+
   function closeMobileMenu(event) {
     const menu = event.currentTarget.closest('details')
     const href = event.currentTarget.getAttribute('href')
@@ -60,6 +85,28 @@ function Navbar() {
     }
   }
 
+  const handleKeyDown = useCallback((event) => {
+    if (event.key === 'Escape' && detailsRef.current?.open) {
+      detailsRef.current.removeAttribute('open')
+      detailsRef.current.querySelector('summary')?.focus()
+    }
+  }, [])
+
+  const handleOutsideClick = useCallback((event) => {
+    if (detailsRef.current?.open && !detailsRef.current.contains(event.target)) {
+      detailsRef.current.removeAttribute('open')
+    }
+  }, [])
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown)
+    document.addEventListener('pointerdown', handleOutsideClick)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      document.removeEventListener('pointerdown', handleOutsideClick)
+    }
+  }, [handleKeyDown, handleOutsideClick])
+
   return (
     <header className="site-header">
       <a className="brand" href="#top">Kidus Admassu<span>Portfolio</span></a>
@@ -67,8 +114,8 @@ function Navbar() {
         <NavigationLinks />
       </nav>
       <div className="desktop-actions"><NavActions /></div>
-      <details className="mobile-navigation">
-        <summary aria-label="Open navigation menu">Menu</summary>
+      <details className="mobile-navigation" ref={detailsRef}>
+        <summary aria-label="Navigation menu">Menu</summary>
         <nav className="site-nav site-nav-mobile" aria-label="Mobile navigation">
           <NavigationLinks onNavigate={closeMobileMenu} />
           <NavActions />

@@ -2,6 +2,7 @@ import { SHOW_CYBERSECURITY_LABS } from './siteConfig.js'
 
 const navigation = [
   { label: 'About', href: '#about' },
+  { label: 'Education', href: '#journey' },
   { label: 'Skills', href: '#skills' },
   { label: 'Projects', href: '#projects' },
   { label: 'Certifications', href: '#certifications' },
